@@ -28,6 +28,8 @@ export default function Index() {
   console.log(posts);
   const [open, setOpen] = useState(false);
 
+  if (!posts) return null;
+
   return (
     <Page>
       <h1>Welcome to Remix</h1>
