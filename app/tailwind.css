@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+div.ytp-chrome-top ytp-show-cards-title {
+  display: none !important;
+}
