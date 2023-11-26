@@ -1,5 +1,6 @@
 import tailwind from "./tailwind.css";
 import { App as KonstaApp, Page, Navbar } from "konsta/react";
+import { useSWEffect, LiveReload } from '@remix-pwa/sw';
 
 import type { LinksFunction } from "@remix-run/node";
 import {
@@ -8,7 +9,6 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  LiveReload,
 } from "@remix-run/react";
 
 
@@ -16,7 +16,9 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwind },
 ];
 
+
 export default function App() {
+  useSWEffect();
   return (
     <html lang="en">
       <head>
