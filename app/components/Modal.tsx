@@ -1,11 +1,5 @@
 import type { ReactNode } from "react";
-import {
-  Sheet,
-  Block,
-  Button,
-  Toolbar,
-  Link,
-} from "konsta/react";
+import { Sheet, Block, Toolbar, Link } from "konsta/react";
 export default function SheetModalPage({
   children,
   open,
@@ -31,9 +25,6 @@ export default function SheetModalPage({
       </Toolbar>
       <Block>
         <div>{children}</div>
-        <div className="mt-4">
-          <Button onClick={() => setOpen(false)}>Action</Button>
-        </div>
       </Block>
     </Sheet>
   );
