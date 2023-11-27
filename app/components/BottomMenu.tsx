@@ -1,12 +1,21 @@
-import { useNavigate } from "@remix-run/react";
+import { useNavigate, useLocation } from "@remix-run/react";
+
 import { Tabbar, TabbarLink, Icon } from "konsta/react";
 import { LayoutDashboard, List, User, MessageCircle } from "lucide-react";
 
 export default function BottomMenu() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  function activeLink(path: string) {
+    if (location.pathname === path) return true;
+    return false;
+  }
+
   return (
     <Tabbar labels icons className="left-0 bottom-0 fixed h-20">
       <TabbarLink
+        active={activeLink("/")}
         icon={
           <Icon
             ios={<LayoutDashboard className="w-5 h-5" />}
@@ -17,6 +26,7 @@ export default function BottomMenu() {
         onClick={() => navigate("/")}
       />
       <TabbarLink
+        active={activeLink("/lessons")}
         icon={
           <Icon
             ios={<List className="w-5 h-5" />}
@@ -27,6 +37,7 @@ export default function BottomMenu() {
         onClick={() => navigate("/lessons")}
       />
       <TabbarLink
+        active={activeLink("/forum")}
         icon={
           <Icon
             ios={<MessageCircle className="w-5 h-5" />}
@@ -37,7 +48,7 @@ export default function BottomMenu() {
         onClick={() => navigate("/forum")}
       />
       <TabbarLink
-        active
+        active={activeLink("/profile")}
         icon={
           <Icon
             ios={<User className="w-5 h-5" />}

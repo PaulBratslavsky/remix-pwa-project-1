@@ -87,7 +87,7 @@ export default function Index() {
   }, [response]);
 
   return (
-    <Page className="pt-16 pb-24">
+    <Page className="pt-8 pb-24">
       <TopAddButton onClick={setOpen} />
       <PostCard posts={posts} />
       <LoadNext pageCount={pageCount} onClick={() => alert("Load more")}/>
