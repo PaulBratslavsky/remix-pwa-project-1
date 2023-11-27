@@ -17,8 +17,7 @@ export const meta: MetaFunction = () => {
 };
 
 function isValidYouTubeUrl(url: string) {
-  const regex =
-    /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(watch\?v=|embed\/)?[a-zA-Z0-9_-]+$/;
+  const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(watch\?v=|embed\/)?[a-zA-Z0-9_-]+(\?.*)?$/;
   return regex.test(url);
 }
 
