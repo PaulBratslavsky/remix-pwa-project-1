@@ -1,13 +1,19 @@
-import type { MetaFunction } from "@remix-run/node";
 import z from "zod";
+
 import { useEffect, useState } from "react";
-import YouTubePlayer from "~/components/YouTubePlayer";
-import { Page, Fab, Card, ListButton, List, ListInput } from "konsta/react";
-import { Plus } from "lucide-react";
+import { isValidYouTubeUrl } from "~/utils";
+
+import { json, type MetaFunction } from "@remix-run/node";
+import { useLoaderData, useActionData } from "@remix-run/react";
+
+import { Page } from "konsta/react";
+
 import Modal from "~/components/Modal";
 import BottomMenu from "~/components/BottomMenu";
-import { useLoaderData, useActionData, Form } from "@remix-run/react";
-import { json } from "@remix-run/node";
+import CreatePostForm from "~/components/CreatePostForm";
+import PostCard from "~/components/PostCard";
+import TopAddButton from "~/components/TopAddButton";
+import LoadNext from "~/components/LoadNext";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,11 +21,6 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
-
-function isValidYouTubeUrl(url: string) {
-  const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(watch\?v=|embed\/)?[a-zA-Z0-9_-]+(\?.*)?$/;
-  return regex.test(url);
-}
 
 export async function action({ request }: { request: Request }) {
   const url = (process.env.API_URL || "http://localhost:1337") + "/api/posts";
@@ -75,77 +76,24 @@ export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const [open, setOpen] = useState(false);
-
   const posts = loaderData.data;
+  const meta = loaderData.meta;
   const errors = actionData?.errors;
   const response = actionData?.data;
+  const pageCount = meta?.pagination.pageCount;
 
   useEffect(() => {
-    if (response !== null) {
-      setOpen(false);
-    }
+    if (response !== null) setOpen(false);
   }, [response]);
 
   return (
-    <Page>
-      <h1>Welcome to Remix</h1>
-      <Fab
-        className="fixed right-4-safe ios:top-15-safe material:top-18-safe z-50 k-color-brand-red"
-        icon={
-          <div className="flex justify-center items-center mt-[2px]">
-            <Plus />
-          </div>
-        }
-        onClick={() => setOpen(true)}
-      />
-      Copy code
-      {posts.map((post: any) => (
-        <Card key={post.id}>
-          <h2 className="pt-1 text-lg">{post.attributes.heading}</h2>
-
-          <YouTubePlayer
-            key={post.id}
-            playerKey={post.id}
-            url={post.attributes.videoUrl}
-          />
-          <p className="py-4">
-            {post.attributes.content.slice(0, 144) + "..."}
-          </p>
-        </Card>
-      ))}
+    <Page className="pt-16 pb-24">
+      <TopAddButton onClick={setOpen} />
+      <PostCard posts={posts} />
+      <LoadNext pageCount={pageCount} onClick={() => alert("Load more")}/>
       <BottomMenu />
       <Modal open={open} setOpen={setOpen}>
-        <Form id="create-form" method="post">
-          <List strongIos insetIos>
-            <ListInput
-              name="heading"
-              label="Title"
-              type="text"
-              placeholder="Title"
-              error={errors && errors.heading && errors.heading[0]}
-            />
-            <ListInput
-              name="videoUrl"
-              label="Video Url"
-              type="text"
-              placeholder="URL"
-              error={errors && errors.videoUrl && errors.videoUrl[0]}
-            />
-            <ListInput
-              name="content"
-              label="Short description"
-              type="textarea"
-              placeholder="Description..."
-              inputClassName="!h-20 resize-none"
-              error={errors && errors.content && errors.content[0]}
-            />
-            <div className="mt-4">
-              <ListButton type="submit" className="">
-                Save
-              </ListButton>
-            </div>
-          </List>
-        </Form>
+        <CreatePostForm errors={errors} data={response} />
       </Modal>
     </Page>
   );

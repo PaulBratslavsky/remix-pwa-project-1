@@ -1933,9 +1933,30 @@ var require_messages = __commonJS({
   }
 });
 
+// routes-module:routes/lessons.tsx?worker
+var require_lessons = __commonJS({
+  "routes-module:routes/lessons.tsx?worker"(exports, module) {
+    module.exports = {};
+  }
+});
+
+// routes-module:routes/profile.tsx?worker
+var require_profile = __commonJS({
+  "routes-module:routes/profile.tsx?worker"(exports, module) {
+    module.exports = {};
+  }
+});
+
 // routes-module:routes/_index.tsx?worker
 var require_index = __commonJS({
   "routes-module:routes/_index.tsx?worker"(exports, module) {
+    module.exports = {};
+  }
+});
+
+// routes-module:routes/forum.tsx?worker
+var require_forum = __commonJS({
+  "routes-module:routes/forum.tsx?worker"(exports, module) {
     module.exports = {};
   }
 });
@@ -6416,10 +6437,13 @@ self.addEventListener("message", (event) => {
 var route0 = __toESM(require_root());
 var route1 = __toESM(require_resources_manifest());
 var route2 = __toESM(require_messages());
-var route3 = __toESM(require_index());
+var route3 = __toESM(require_lessons());
+var route4 = __toESM(require_profile());
+var route5 = __toESM(require_index());
+var route6 = __toESM(require_forum());
 
 // assets-module:@remix-pwa/dev?assets
-var assets = ["/build/root-AWMQ2LLD.js", "/build/manifest-B6998139.js", "/build/entry.client-3RA2UBAF.js", "/build/__remix_entry_dev-4SPYXR5X.js", "/build/_shared/runtime-GC7QIU56.js", "/build/_shared/remix_hmr-2DYPEDCG.js", "/build/_shared/react-dom-BEFB7ICU.js", "/build/_shared/react-3OYUNTOK.js", "/build/_shared/jsx-runtime-7NXSP56X.js", "/build/_shared/jsx-dev-runtime-RDH4Y5YT.js", "/build/_shared/esm-ZP3RTDW5.js", "/build/_shared/client-DFZR44C7.js", "/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-TLOYGXUQ.js", "/build/_shared/chunk-QULNV6K4.js", "/build/_shared/chunk-PNG5AS42.js", "/build/_shared/chunk-LMCA7XKV.js", "/build/_shared/chunk-GZY3AHKZ.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-3BAVCKRR.js", "/build/routes/resources.manifest-JREGC7H6.js", "/build/routes/messages-SMREXSJR.js", "/build/routes/_index-3MFL2CYD.js", "/build/_assets/tailwind-J7WZA6OB.css"];
+var assets = ["/build/root-YUUIYJRU.js", "/build/manifest-FDECCDCA.js", "/build/entry.client-IXSIDGFF.js", "/build/__remix_entry_dev-HGBAEWJY.js", "/build/routes/resources.manifest-JREGC7H6.js", "/build/routes/profile-6637SOYD.js", "/build/routes/messages-EXYF2Y2A.js", "/build/routes/lessons-JBCB2YIP.js", "/build/routes/forum-NVK7HV2Y.js", "/build/routes/_index-V3JSMPJQ.js", "/build/_shared/runtime-GC7QIU56.js", "/build/_shared/remix_hmr-2DYPEDCG.js", "/build/_shared/react-dom-BEFB7ICU.js", "/build/_shared/react-3OYUNTOK.js", "/build/_shared/jsx-runtime-7NXSP56X.js", "/build/_shared/jsx-dev-runtime-RDH4Y5YT.js", "/build/_shared/esm-OP2CITBY.js", "/build/_shared/client-DFZR44C7.js", "/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-UR65HREH.js", "/build/_shared/chunk-ULSZLD4R.js", "/build/_shared/chunk-PNG5AS42.js", "/build/_shared/chunk-OKGRSVCB.js", "/build/_shared/chunk-ICF3FTUJ.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-3BAVCKRR.js", "/build/_shared/chunk-2TVSWIRQ.js", "/build/_shared/chunk-2GOO7ROI.js", "/build/_assets/tailwind-6D66CCN5.css"];
 
 // entry-module:@remix-pwa/build/magic
 var routes = {
@@ -6447,13 +6471,37 @@ var routes = {
     caseSensitive: void 0,
     module: route2
   },
+  "routes/lessons": {
+    id: "routes/lessons",
+    parentId: "root",
+    path: "lessons",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route3
+  },
+  "routes/profile": {
+    id: "routes/profile",
+    parentId: "root",
+    path: "profile",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route4
+  },
   "routes/_index": {
     id: "routes/_index",
     parentId: "root",
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route3
+    module: route5
+  },
+  "routes/forum": {
+    id: "routes/forum",
+    parentId: "root",
+    path: "forum",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route6
   }
 };
 var entry = { module: entry_worker_exports };

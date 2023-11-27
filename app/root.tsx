@@ -3,6 +3,8 @@ import { App as KonstaApp, Page, Navbar } from "konsta/react";
 import { useSWEffect, LiveReload } from '@remix-pwa/sw';
 
 import type { LinksFunction } from "@remix-run/node";
+import BottomMenu from "~/components/BottomMenu";
+
 import {
   Links,
   Meta,
@@ -33,6 +35,7 @@ export default function App() {
           <Page>
             <Navbar title="BJJ & Friends" />
             <Outlet />
+            <BottomMenu />
           </Page>
         </KonstaApp>
         <ScrollRestoration />

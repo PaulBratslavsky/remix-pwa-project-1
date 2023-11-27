@@ -42,3 +42,9 @@ export function parseStartTime (url: string ) {
 export function parseEndTime (url: string) {
   return parseTimeParam(url, MATCH_END_QUERY)
 }
+
+export function isValidYouTubeUrl(url: string) {
+  const regex =
+    /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/(watch\?v=|embed\/)?[a-zA-Z0-9_-]+(\?.*)?$/;
+  return regex.test(url);
+}

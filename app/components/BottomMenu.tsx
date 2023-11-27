@@ -1,11 +1,11 @@
 import { useNavigate } from "@remix-run/react";
 import { Tabbar, TabbarLink, Icon } from "konsta/react";
-import { LayoutDashboard, List, User, MessageSquare } from "lucide-react";
+import { LayoutDashboard, List, User, MessageCircle } from "lucide-react";
 
 export default function BottomMenu() {
   const navigate = useNavigate();
   return (
-    <Tabbar labels icons className="left-0 bottom-0 fixed">
+    <Tabbar labels icons className="left-0 bottom-0 fixed h-20">
       <TabbarLink
         icon={
           <Icon
@@ -29,12 +29,12 @@ export default function BottomMenu() {
       <TabbarLink
         icon={
           <Icon
-            ios={<MessageSquare className="w-5 h-5" />}
-            material={<MessageSquare className="w-5 h-5" />}
+            ios={<MessageCircle className="w-5 h-5" />}
+            material={<MessageCircle className="w-5 h-5" />}
           />
         }
-        label="Messages"
-        onClick={() => navigate("/messages")}
+        label="Forum"
+        onClick={() => navigate("/forum")}
       />
       <TabbarLink
         active
