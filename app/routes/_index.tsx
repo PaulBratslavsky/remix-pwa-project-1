@@ -75,12 +75,15 @@ export async function loader() {
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
+
   const [open, setOpen] = useState(false);
+
   const posts = loaderData.data;
   const meta = loaderData.meta;
+  const pageCount = meta?.pagination.pageCount;
+
   const errors = actionData?.errors;
   const response = actionData?.data;
-  const pageCount = meta?.pagination.pageCount;
 
   useEffect(() => {
     if (response !== null) setOpen(false);
