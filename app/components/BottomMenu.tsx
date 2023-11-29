@@ -13,7 +13,7 @@ export default function BottomMenu() {
   }
 
   return (
-    <Tabbar labels icons className="left-0 bottom-0 fixed h-20">
+    <Tabbar labels icons className="bottom-0 fixed h-20 max-w-md">
       <TabbarLink
         active={activeLink("/")}
         icon={

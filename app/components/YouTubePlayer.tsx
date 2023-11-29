@@ -53,7 +53,7 @@ const YouTubePlayer = ({
         rel: rel ? 1 : 0,
       },
     });
-  }, [id]);
+  }, [id, url]);
 
   useEffect(() => {
     playerInitializers.set(playerKey, initializeYouTubePlayer);

@@ -31,8 +31,10 @@ export async function loader() {
   return json({...data, strapiUrl });
 }
 
+
 export default function LessonsRoute() {
   const loaderData = useLoaderData<typeof loader>();
+
 
   const lessons = loaderData.data;
   const meta = loaderData.meta;

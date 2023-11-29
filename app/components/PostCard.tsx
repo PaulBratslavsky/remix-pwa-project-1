@@ -3,7 +3,7 @@ import YouTubePlayer from "~/components/YouTubePlayer";
 function PostCard({
   post,
 }: {
-  post: {
+  readonly post: {
     id: string;
     attributes: {
       heading: string;

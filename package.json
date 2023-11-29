@@ -23,6 +23,7 @@
     "@remix-run/serve": "^2.3.1",
     "@types/lodash": "^4.14.202",
     "@types/qs": "^6.9.10",
+    "date-fns": "^2.30.0",
     "debounce": "^2.0.0",
     "dotenv": "^16.3.1",
     "isbot": "^3.6.8",

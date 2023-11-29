@@ -1,7 +1,19 @@
 import { List, ListItem } from "konsta/react";
 import { getStrapiMedia } from "~/utils/api-helpers";
+import { useNavigate } from "@remix-run/react";
 
-function LessonItem({ lesson, strapiUrl }: { lesson: any, strapiUrl: string }) {
+interface LessonProps {
+  readonly lesson: any;
+  readonly strapiUrl: string;
+}
+
+interface LessonsProps {
+  readonly lessons: any;
+  readonly strapiUrl: string;
+}
+
+function LessonItem({ lesson, strapiUrl }: LessonProps) {
+  const navigate = useNavigate();
   const user = lesson.attributes.user_bio.data;
   const name = user.attributes.name;
   const belt = user.attributes.belt.toLowerCase();
@@ -9,7 +21,6 @@ function LessonItem({ lesson, strapiUrl }: { lesson: any, strapiUrl: string }) {
   const alt = user.attributes.image.data.attributes.alternativeText;
   const imageUrl = getStrapiMedia(image, strapiUrl);
   const fullImageUrl = imageUrl ? imageUrl : "https://picsum.photos/200";
-
 
   return (
     <ListItem
@@ -22,20 +33,21 @@ function LessonItem({ lesson, strapiUrl }: { lesson: any, strapiUrl: string }) {
       media={
         <img
           className="ios:rounded-lg material:rounded-full ios:w-20 material:w-10"
-          src={fullImageUrl as string}
+          src={fullImageUrl}
           width="80"
           alt={alt || "user image"}
         />
       }
+      onClick={() => navigate("/lessons/" + lesson.id)}
     />
   );
 }
 
-export default function LessonList({ lessons, strapiUrl }: { lessons: any, strapiUrl: string }) {
+export default function LessonList({ lessons, strapiUrl }: LessonsProps) {
   if (!lessons) return null;
   return (
     <List strongIos outlineIos>
-      {lessons.map(( lesson: any ) => (
+      {lessons.map((lesson: any) => (
         <LessonItem key={lesson.id} lesson={lesson} strapiUrl={strapiUrl} />
       ))}
     </List>

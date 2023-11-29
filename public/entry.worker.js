@@ -1926,16 +1926,23 @@ var require_resources_manifest = __commonJS({
   }
 });
 
-// routes-module:routes/messages.tsx?worker
-var require_messages = __commonJS({
-  "routes-module:routes/messages.tsx?worker"(exports, module) {
+// routes-module:routes/lessons.$lessonId.tsx?worker
+var require_lessons_lessonId = __commonJS({
+  "routes-module:routes/lessons.$lessonId.tsx?worker"(exports, module) {
     module.exports = {};
   }
 });
 
-// routes-module:routes/lessons.tsx?worker
+// routes-module:routes/lessons_.tsx?worker
 var require_lessons = __commonJS({
-  "routes-module:routes/lessons.tsx?worker"(exports, module) {
+  "routes-module:routes/lessons_.tsx?worker"(exports, module) {
+    module.exports = {};
+  }
+});
+
+// routes-module:routes/messages.tsx?worker
+var require_messages = __commonJS({
+  "routes-module:routes/messages.tsx?worker"(exports, module) {
     module.exports = {};
   }
 });
@@ -6443,15 +6450,16 @@ self.addEventListener("message", (event) => {
 // entry-module:@remix-pwa/build/magic
 var route0 = __toESM(require_root());
 var route1 = __toESM(require_resources_manifest());
-var route2 = __toESM(require_messages());
+var route2 = __toESM(require_lessons_lessonId());
 var route3 = __toESM(require_lessons());
-var route4 = __toESM(require_profile());
-var route5 = __toESM(require_index());
-var route6 = __toESM(require_forum());
-var route7 = __toESM(require_gyms());
+var route4 = __toESM(require_messages());
+var route5 = __toESM(require_profile());
+var route6 = __toESM(require_index());
+var route7 = __toESM(require_forum());
+var route8 = __toESM(require_gyms());
 
 // assets-module:@remix-pwa/dev?assets
-var assets = ["/build/root-WNC4PK2C.js", "/build/manifest-91372995.js", "/build/entry.client-64IYJQF3.js", "/build/__remix_entry_dev-QIA37FTX.js", "/build/routes/resources.manifest-JREGC7H6.js", "/build/routes/profile-CTROFCFA.js", "/build/routes/messages-37FNXO6A.js", "/build/routes/lessons-5YDFM5J6.js", "/build/routes/gyms-HN4UXPQZ.js", "/build/routes/forum-EN3YKT52.js", "/build/routes/_index-2QHPJRIR.js", "/build/_shared/runtime-GC7QIU56.js", "/build/_shared/remix_hmr-2DYPEDCG.js", "/build/_shared/react-dom-BEFB7ICU.js", "/build/_shared/react-3OYUNTOK.js", "/build/_shared/jsx-runtime-7NXSP56X.js", "/build/_shared/jsx-dev-runtime-RDH4Y5YT.js", "/build/_shared/esm-OP2CITBY.js", "/build/_shared/client-DFZR44C7.js", "/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-VEA2KZDQ.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-PNG5AS42.js", "/build/_shared/chunk-OKGRSVCB.js", "/build/_shared/chunk-JML77BMJ.js", "/build/_shared/chunk-ICF3FTUJ.js", "/build/_shared/chunk-GKYRGBKL.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-4FZEBB6O.js", "/build/_shared/chunk-3BAVCKRR.js", "/build/_assets/tailwind-5UV676YK.css"];
+var assets = ["/build/root-VM7L7OSV.js", "/build/manifest-D1B32DD6.js", "/build/entry.client-HJDIDKO6.js", "/build/__remix_entry_dev-RZADDVWH.js", "/build/routes/resources.manifest-JREGC7H6.js", "/build/routes/profile-RIOM7JFE.js", "/build/routes/messages-THH3ORYE.js", "/build/routes/lessons_-KCYNRUEY.js", "/build/routes/lessons.$lessonId-HLIRBTNZ.js", "/build/routes/gyms-ULKM2EBI.js", "/build/routes/forum-GJUTKLNS.js", "/build/routes/_index-PJLRCGNX.js", "/build/_assets/tailwind-PUDXAZAY.css", "/build/_shared/runtime-GC7QIU56.js", "/build/_shared/remix_hmr-2DYPEDCG.js", "/build/_shared/react-dom-BEFB7ICU.js", "/build/_shared/react-3OYUNTOK.js", "/build/_shared/jsx-runtime-7NXSP56X.js", "/build/_shared/jsx-dev-runtime-RDH4Y5YT.js", "/build/_shared/esm-4RRRWEYN.js", "/build/_shared/client-DFZR44C7.js", "/build/_shared/chunk-ZWGWGGVF.js", "/build/_shared/chunk-XU7DNSPJ.js", "/build/_shared/chunk-UWV35TSL.js", "/build/_shared/chunk-U5ZGUCCQ.js", "/build/_shared/chunk-RFLUIAHP.js", "/build/_shared/chunk-PNG5AS42.js", "/build/_shared/chunk-LBBA4FV4.js", "/build/_shared/chunk-JML77BMJ.js", "/build/_shared/chunk-GIAAE3CH.js", "/build/_shared/chunk-G7CHZRZX.js", "/build/_shared/chunk-BOXFZXVX.js", "/build/_shared/chunk-AUZXX4I5.js", "/build/_shared/chunk-7DXLUKWR.js", "/build/_shared/chunk-3BAVCKRR.js", "/build/_shared/chunk-2M2AURJQ.js", "/build/_shared/chunk-23IOCF3W.js"];
 
 // entry-module:@remix-pwa/build/magic
 var routes = {
@@ -6471,21 +6479,29 @@ var routes = {
     caseSensitive: void 0,
     module: route1
   },
+  "routes/lessons.$lessonId": {
+    id: "routes/lessons.$lessonId",
+    parentId: "root",
+    path: "lessons/:lessonId",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route2
+  },
+  "routes/lessons_": {
+    id: "routes/lessons_",
+    parentId: "root",
+    path: "lessons",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route3
+  },
   "routes/messages": {
     id: "routes/messages",
     parentId: "root",
     path: "messages",
     index: void 0,
     caseSensitive: void 0,
-    module: route2
-  },
-  "routes/lessons": {
-    id: "routes/lessons",
-    parentId: "root",
-    path: "lessons",
-    index: void 0,
-    caseSensitive: void 0,
-    module: route3
+    module: route4
   },
   "routes/profile": {
     id: "routes/profile",
@@ -6493,7 +6509,7 @@ var routes = {
     path: "profile",
     index: void 0,
     caseSensitive: void 0,
-    module: route4
+    module: route5
   },
   "routes/_index": {
     id: "routes/_index",
@@ -6501,7 +6517,7 @@ var routes = {
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route5
+    module: route6
   },
   "routes/forum": {
     id: "routes/forum",
@@ -6509,7 +6525,7 @@ var routes = {
     path: "forum",
     index: void 0,
     caseSensitive: void 0,
-    module: route6
+    module: route7
   },
   "routes/gyms": {
     id: "routes/gyms",
@@ -6517,7 +6533,7 @@ var routes = {
     path: "gyms",
     index: void 0,
     caseSensitive: void 0,
-    module: route7
+    module: route8
   }
 };
 var entry = { module: entry_worker_exports };

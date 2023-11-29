@@ -1,6 +1,6 @@
 import tailwind from "./tailwind.css";
 import { App as KonstaApp, Page, Navbar } from "konsta/react";
-import { useSWEffect, LiveReload } from '@remix-pwa/sw';
+import { useSWEffect, LiveReload } from "@remix-pwa/sw";
 
 import type { LinksFunction } from "@remix-run/node";
 import BottomMenu from "~/components/BottomMenu";
@@ -13,11 +13,9 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwind },
 ];
-
 
 export default function App() {
   useSWEffect();
@@ -30,8 +28,12 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
-        <KonstaApp theme="ios" className="dark">
+      <body className="max-w-md mx-auto">
+        {/* Message for medium or larger screens */}
+        <div className="hidden md:flex justify-center items-center h-screen">
+          Please view on a mobile device
+        </div>
+        <KonstaApp theme="ios" className="dark md:hidden">
           <Page>
             <Navbar title="BJJ & Friends" />
             <Outlet />

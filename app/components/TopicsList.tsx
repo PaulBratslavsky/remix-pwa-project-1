@@ -1,40 +1,39 @@
 import { List, ListItem } from "konsta/react";
+import { format } from 'date-fns';
 
-export default function TopicsList() {
+interface TopicProps {
+  readonly topic: any;
+}
+
+interface TopicsProps {
+  readonly topics: any;
+}
+function TopicItem({ topic }: TopicProps) {
+  console.dir(topic);
+
+  const user = topic.attributes.user_bio.data;
+  const name = user.attributes.name;
+  const belt = user.attributes.belt.toLowerCase();
+
+  return (
+    <ListItem
+      link
+      chevronMaterial={false}
+      title={topic.attributes.title}
+      after={format(new Date(topic.attributes.createdAt), 'dd/MM/yyyy')}
+      subtitle={name + " - " + belt + " belt"}
+      text={topic.attributes.description}
+    />
+  );
+}
+
+export default function TopicsList({ topics }: TopicsProps) {
+  if (!topics) return null;
   return (
     <List strongIos outlineIos>
-      <ListItem
-        link
-        chevronMaterial={false}
-        title="Facebook"
-        after="17:14"
-        subtitle="New messages from John Doe"
-        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus."
-      />
-      <ListItem
-        link
-        chevronMaterial={false}
-        title="John Doe (via Twitter)"
-        after="17:11"
-        subtitle="John Doe (@_johndoe) mentioned you on Twitter!"
-        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus."
-      />
-      <ListItem
-        link
-        chevronMaterial={false}
-        title="Facebook"
-        after="16:48"
-        subtitle="New messages from John Doe"
-        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus."
-      />
-      <ListItem
-        link
-        chevronMaterial={false}
-        title="John Doe (via Twitter)"
-        after="15:32"
-        subtitle="John Doe (@_johndoe) mentioned you on Twitter!"
-        text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis tellus ut turpis condimentum, ut dignissim lacus tincidunt. Cras dolor metus, ultrices condimentum sodales sit amet, pharetra sodales eros. Phasellus vel felis tellus. Mauris rutrum ligula nec dapibus feugiat. In vel dui laoreet, commodo augue id, pulvinar lacus."
-      />
+      {topics.map((topic: any) => (
+        <TopicItem key={topic.id} topic={topic} />
+      ))}
     </List>
   );
 }
