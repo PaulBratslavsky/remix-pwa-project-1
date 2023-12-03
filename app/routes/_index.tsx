@@ -77,6 +77,7 @@ export default function Index() {
   const actionData = useActionData<typeof action>();
 
   const [open, setOpen] = useState(false);
+  
 
   const posts = loaderData.data;
   const meta = loaderData.meta;

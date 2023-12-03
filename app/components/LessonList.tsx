@@ -1,6 +1,6 @@
 import { List, ListItem } from "konsta/react";
-import { getStrapiMedia } from "~/utils/api-helpers";
 import { useNavigate } from "@remix-run/react";
+import StrapiImage from "./StrapiImage";
 
 interface LessonProps {
   readonly lesson: any;
@@ -19,8 +19,6 @@ function LessonItem({ lesson, strapiUrl }: LessonProps) {
   const belt = user.attributes.belt.toLowerCase();
   const image = user.attributes.image.data.attributes.url;
   const alt = user.attributes.image.data.attributes.alternativeText;
-  const imageUrl = getStrapiMedia(image, strapiUrl);
-  const fullImageUrl = imageUrl ? imageUrl : "https://picsum.photos/200";
 
   return (
     <ListItem
@@ -30,14 +28,7 @@ function LessonItem({ lesson, strapiUrl }: LessonProps) {
       after="beginner"
       subtitle={name + " - " + belt + " belt"}
       text={lesson.attributes.description.slice(0, 144) + "..."}
-      media={
-        <img
-          className="ios:rounded-lg material:rounded-full ios:w-20 material:w-10"
-          src={fullImageUrl}
-          width="80"
-          alt={alt || "user image"}
-        />
-      }
+      media={<StrapiImage url={image} alt={alt} strapiUrl={strapiUrl} />}
       onClick={() => navigate("/lessons/" + lesson.id)}
     />
   );

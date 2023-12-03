@@ -4,9 +4,13 @@ import qs from "qs";
 
 const query = qs.stringify({
   populate: {
-    image: {
-      fields: ["url", "alternativeText"],
-    },
+    bio: {
+      populate: {
+        image: {
+          fields: ["url", "alternativeText"],
+        },
+      }
+    }
   },
 });
 

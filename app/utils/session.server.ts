@@ -31,6 +31,7 @@ export async function getUserData(request: Request) {
   return session.get('user-session');
 }
 
+
 export async function logout(request: Request) {
   const sessionData = await getUserSession(request);
   return redirect("/", {
