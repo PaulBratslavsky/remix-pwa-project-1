@@ -32,8 +32,6 @@ export async function action({ request }: { request: Request }) {
   const user = await userme(request);
   if (!user) return redirect("/login");
 
-  console.log(user.bio.id);
-
   const url = (process.env.API_URL || "http://localhost:1337") + "/api/topics";
   const formData = await request.formData();
 
@@ -88,7 +86,7 @@ export default function ForumRoute() {
   }, [response]);
 
   return (
-    <Page>
+    <Page className="pb-16">
       <Navbar title="Forum" right={<BackButton />} />
       <TopAddButton onClick={setOpen} />
       <TopicsList topics={topics} />

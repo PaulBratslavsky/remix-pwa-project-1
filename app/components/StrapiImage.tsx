@@ -9,7 +9,7 @@ export default function StrapiImage({
   url: string;
   alt: string;
   strapiUrl: string;
-  className: string;
+  className?: string;
 }) {
   const imageUrl = getStrapiMedia(url, strapiUrl);
   const fullImageUrl = imageUrl ? imageUrl : "https://picsum.photos/200";

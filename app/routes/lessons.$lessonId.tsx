@@ -5,10 +5,50 @@ import YouTubePlayer from "~/components/YouTubePlayer";
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { Page, Navbar, Card, Button } from "konsta/react";
+import { Page, Navbar, Block, BlockTitle, BlockFooter } from "konsta/react";
 
 import BackButton from "~/components/BackButton";
 import { getStrapiURL } from "~/utils/api-helpers";
+import RichText from "~/components/RichText";
+
+const markdown = `
+# Basic Double Leg Takedown in Wrestling
+
+## Overview
+The double leg takedown is one of the most common and effective moves in wrestling. It involves penetrating your opponent's defense and using your body to bring them down to the mat.
+
+## Steps
+
+### Step 1: Stance and Position
+- Start in a good wrestling stance: knees bent, back straight, and head up.
+- Stay light on your feet, ready to move quickly.
+
+### Step 2: Penetration Step
+- Take a big step towards your opponent with your lead foot.
+- Lower your level as you step, bringing your hips in line with your opponent.
+
+### Step 3: Grabbing the Legs
+- Reach both arms around your opponent’s legs.
+- Aim to grab behind the knees for a firm grip.
+
+### Step 4: The Lift
+- Drive forward with your legs, lifting your opponent off the ground.
+- Keep your back straight and head up while lifting.
+
+### Step 5: The Takedown
+- As you lift, push forward and slightly to the side.
+- Use your body weight to bring your opponent down to the mat.
+
+### Step 6: Control on the Mat
+- Once your opponent is on the mat, quickly transition to a controlling position.
+- Stay on top and maintain pressure to prevent them from escaping.
+
+## Tips
+- Speed and timing are crucial for a successful double leg takedown.
+- Practice your penetration step to close the distance quickly.
+- Keep a strong grip on your opponent’s legs throughout the move.
+
+`
 
 const query = qs.stringify({
   fields: ["title", "description", "videoUrl"],
@@ -40,46 +80,29 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export default function LessonDynamicRoute() {
   const loaderData = useLoaderData<typeof loader>();
-
   const lesson = loaderData.data;
-  const strapiUrl = loaderData.strapiUrl;
 
   return (
-    <Page>
-      <Navbar title="Single Lessons" right={<BackButton />} />
-      <LessonDetail lesson={lesson} strapiUrl={strapiUrl} />
-    </Page>
-  );
-}
+    <Page className="bg-white pb-24">
+      <Navbar title={lesson.attributes.title} right={<BackButton />} />
 
-function LessonDetail({
-  lesson,
-  strapiUrl,
-}: {
-  readonly lesson: any;
-  readonly strapiUrl: string;
-}) {
-  if (!lesson) return null;
-  return (
-    <Card
-      outline
-      footer={
-        <div className="flex justify-between material:hidden">
-          <Button rounded inline>
-            Like
-          </Button>
-        </div>
-      }
-    >
       <YouTubePlayer
         key={lesson.id}
         playerKey={lesson.id}
         url={lesson.attributes.videoUrl}
+        className="-my-5.75 sticky top-5 z-50"
       />
 
-      <h1> {lesson.attributes.title}</h1>
-      <div className="text-gray-500 mt-6 mb-3">Posted on January 21, 2021</div>
-      <p>{lesson.attributes.description}</p>
-    </Card>
+      <BlockTitle>{lesson.attributes.title}</BlockTitle>
+      <BlockFooter className="text-gray-500 mt-6 mb-3">
+        Posted on January 21, 2021
+      </BlockFooter>
+      <Block>
+        <p>{lesson.attributes.description}</p>
+      </Block>
+      <Block>
+        <RichText content={markdown} />
+      </Block>
+    </Page>
   );
 }

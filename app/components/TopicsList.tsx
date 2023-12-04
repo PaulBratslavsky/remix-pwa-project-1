@@ -30,7 +30,7 @@ function TopicItem({ topic }: TopicProps) {
 export default function TopicsList({ topics }: TopicsProps) {
   if (!topics) return null;
   return (
-    <List strongIos outlineIos>
+    <List strongIos outlineIos className="-mt-1">
       {topics.map((topic: any) => (
         <TopicItem key={topic.id} topic={topic} />
       ))}

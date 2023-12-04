@@ -1,8 +1,10 @@
 import tailwind from "./tailwind.css";
 import { App as KonstaApp, Page, Navbar } from "konsta/react";
 import { useSWEffect, LiveReload } from "@remix-pwa/sw";
+import { getStrapiURL } from "~/utils/api-helpers";
+import { userme } from "~/api/auth/userme.server";
 
-import type { LinksFunction } from "@remix-run/node";
+import { type LinksFunction, type LoaderFunctionArgs, json } from "@remix-run/node";
 import BottomMenu from "~/components/BottomMenu";
 
 import {
@@ -11,14 +13,22 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: tailwind },
 ];
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const strapiUrl = getStrapiURL();
+  const user = await userme(request);
+  return json({ user, strapiUrl });
+}
+
 export default function App() {
   useSWEffect();
+  const data = useLoaderData<typeof loader>();
   return (
     <html lang="en">
       <head>
@@ -33,7 +43,7 @@ export default function App() {
         <div className="hidden md:flex justify-center items-center h-screen">
           Please view on a mobile device
         </div>
-        <KonstaApp theme="ios" className="dark md:hidden">
+        <KonstaApp theme="ios" className=" md:hidden">
           <Page>
             <Navbar title="BJJ & Friends" />
             <Outlet />

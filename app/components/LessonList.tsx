@@ -37,7 +37,7 @@ function LessonItem({ lesson, strapiUrl }: LessonProps) {
 export default function LessonList({ lessons, strapiUrl }: LessonsProps) {
   if (!lessons) return null;
   return (
-    <List strongIos outlineIos>
+    <List strongIos outlineIos className="-mt-1">
       {lessons.map((lesson: any) => (
         <LessonItem key={lesson.id} lesson={lesson} strapiUrl={strapiUrl} />
       ))}

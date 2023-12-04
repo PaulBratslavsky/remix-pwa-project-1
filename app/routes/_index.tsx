@@ -91,7 +91,7 @@ export default function Index() {
   }, [response]);
 
   return (
-    <Page className="pb-24 relative">
+    <Page className="pb-24 relative bg-white">
       <TopAddButton onClick={setOpen} />
       <PostCard posts={posts} />
       <LoadNext pageCount={pageCount} onClick={() => alert("Load more")}/>
@@ -102,3 +102,4 @@ export default function Index() {
     </Page>
   );
 }
+

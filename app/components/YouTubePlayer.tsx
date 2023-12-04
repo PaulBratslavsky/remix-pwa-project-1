@@ -26,9 +26,11 @@ const playerInitializers = new Map();
 const YouTubePlayer = ({
   url,
   playerKey,
+  className,
 }: {
   url: string;
   playerKey: string;
+  className?: string;
 }) => {
   const playerRef = useRef<HTMLDivElement>(null);
   const playerInstanceRef = useRef<any>(null);
@@ -110,7 +112,7 @@ const YouTubePlayer = ({
   };
 
   return (
-    <div>
+    <div className={className}>
       <div
         style={{
           position: "relative",
