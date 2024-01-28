@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { userme } from "~/api/auth/userme.server";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, useActionData } from "@remix-run/react";
-import { getStrapiURL } from "~/utils/api-helpers";
+import { flattenAttributes, getStrapiURL } from "~/utils/api-helpers";
 
 import { Page, Navbar } from "konsta/react";
 import BackButton from "~/components/BackButton";
@@ -22,17 +22,19 @@ const query = qs.stringify({
 
 export async function loader() {
   const strapiUrl = getStrapiURL();
-  const url = (strapiUrl || "http://localhost:1337") + "/api/topics?" + query;
+  const url = strapiUrl + "/api/topics?" + query;
   const res = await fetch(url);
   const data = await res.json();
-  return json({ ...data, strapiUrl });
+  const flattenedData = flattenAttributes(data);
+  return json({ ...flattenedData, strapiUrl });
 }
 
 export async function action({ request }: { request: Request }) {
+  const strapiUrl = getStrapiURL();
   const user = await userme(request);
   if (!user) return redirect("/login");
 
-  const url = (process.env.API_URL || "http://localhost:1337") + "/api/topics";
+  const url = strapiUrl + "/api/topics";
   const formData = await request.formData();
 
   const formSchema = z.object({

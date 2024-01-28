@@ -1,33 +1,46 @@
+import { useNavigate } from "@remix-run/react";
 import { List, ListItem } from "konsta/react";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 interface TopicProps {
-  readonly topic: any;
+  topic: {
+    id: number;
+    title: string;
+    description: string;
+    public: boolean;
+    createdAt: string;
+    user_bio: {
+      id: number;
+      name: string;
+      belt: string;
+    };
+  };
 }
 
 interface TopicsProps {
-  readonly topics: any;
+  topics: TopicProps[];
 }
-function TopicItem({ topic }: TopicProps) {
-  console.dir(topic);
 
-  const user = topic.attributes.user_bio.data;
-  const name = user.attributes.name;
-  const belt = user.attributes.belt.toLowerCase();
+function TopicItem({ topic }: Readonly<TopicProps>) {
+  const user = topic.user_bio;
+  const navigate = useNavigate();
+  const name = user.name;
+  const belt = user.belt.toLowerCase();
 
   return (
     <ListItem
       link
       chevronMaterial={false}
-      title={topic.attributes.title}
-      after={format(new Date(topic.attributes.createdAt), 'dd/MM/yyyy')}
+      title={topic.title}
+      after={format(new Date(topic.createdAt), "dd/MM/yyyy")}
       subtitle={name + " - " + belt + " belt"}
-      text={topic.attributes.description}
+      text={topic.description}
+      onClick={() => navigate("/forum/" + topic.id)}
     />
   );
 }
 
-export default function TopicsList({ topics }: TopicsProps) {
+export default function TopicsList({ topics }: Readonly<TopicsProps>) {
   if (!topics) return null;
   return (
     <List strongIos outlineIos className="-mt-1">

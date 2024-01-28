@@ -8,7 +8,7 @@ import { useLoaderData } from "@remix-run/react";
 import { Page, Navbar, Block, BlockTitle, BlockFooter } from "konsta/react";
 
 import BackButton from "~/components/BackButton";
-import { getStrapiURL } from "~/utils/api-helpers";
+import { getStrapiURL, flattenAttributes } from "~/utils/api-helpers";
 import RichText from "~/components/RichText";
 import Editor from "~/components/Editor";
 
@@ -68,39 +68,38 @@ const query = qs.stringify({
 export async function loader({ params }: LoaderFunctionArgs) {
   const lessonId = params.lessonId;
   const strapiUrl = getStrapiURL();
-  const url =
-    (strapiUrl || "http://localhost:1337") +
-    "/api/lessons/" +
-    lessonId +
-    "?" +
-    query;
+  const url = strapiUrl + "/api/lessons/" + lessonId + "?" + query;
   const res = await fetch(url);
   const data = await res.json();
-  return json({ ...data, strapiUrl });
+  const flattenedData = flattenAttributes(data);
+  return json({ ...flattenedData, strapiUrl });
 }
 
 export default function LessonDynamicRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  const lesson = loaderData.data;
+  const lesson = loaderData;
 
   return (
     <Page className="bg-white pb-24">
-      <Navbar title={lesson.attributes.title.slice(0,34) + "..."} right={<BackButton />} />
+      <Navbar
+        title={lesson.title.slice(0, 34) + "..."}
+        right={<BackButton />}
+      />
 
       <YouTubePlayer
         key={lesson.id}
         playerKey={lesson.id}
-        url={lesson.attributes.videoUrl}
+        url={lesson.videoUrl}
         className="-my-5.75 sticky top-5 z-50"
       />
 
       <Editor />
-      <BlockTitle>{lesson.attributes.title}</BlockTitle>
+      <BlockTitle>{lesson.title}</BlockTitle>
       <BlockFooter className="text-gray-500 mt-6 mb-3">
         Posted on January 21, 2021
       </BlockFooter>
       <Block>
-        <p>{lesson.attributes.description}</p>
+        <p>{lesson.description}</p>
       </Block>
       <Block>
         <RichText content={markdown} />
