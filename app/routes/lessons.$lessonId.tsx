@@ -85,7 +85,7 @@ export default function LessonDynamicRoute() {
 
   return (
     <Page className="bg-white pb-24">
-      <Navbar title={lesson.attributes.title} right={<BackButton />} />
+      <Navbar title={lesson.attributes.title.slice(0,34) + "..."} right={<BackButton />} />
 
       <YouTubePlayer
         key={lesson.id}
