@@ -73,12 +73,20 @@ export default function ProfileRoute() {
             </ListInput>
 
             <ListInput
+              name="bio"
               outline
               label="Bio"
               type="textarea"
               placeholder="Bio"
               inputClassName="!h-20 resize-none"
               defaultValue={bio}
+            />
+
+            <ListInput
+              name="image"
+              outline
+              label="Image"
+              type="file"
             />
           </List>
         </div>

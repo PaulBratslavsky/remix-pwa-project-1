@@ -10,6 +10,7 @@ import { Page, Navbar, Block, BlockTitle, BlockFooter } from "konsta/react";
 import BackButton from "~/components/BackButton";
 import { getStrapiURL } from "~/utils/api-helpers";
 import RichText from "~/components/RichText";
+import Editor from "~/components/Editor";
 
 const markdown = `
 # Basic Double Leg Takedown in Wrestling
@@ -48,7 +49,7 @@ The double leg takedown is one of the most common and effective moves in wrestli
 - Practice your penetration step to close the distance quickly.
 - Keep a strong grip on your opponent’s legs throughout the move.
 
-`
+`;
 
 const query = qs.stringify({
   fields: ["title", "description", "videoUrl"],
@@ -93,6 +94,7 @@ export default function LessonDynamicRoute() {
         className="-my-5.75 sticky top-5 z-50"
       />
 
+      <Editor />
       <BlockTitle>{lesson.attributes.title}</BlockTitle>
       <BlockFooter className="text-gray-500 mt-6 mb-3">
         Posted on January 21, 2021

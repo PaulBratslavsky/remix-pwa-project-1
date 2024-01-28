@@ -7,7 +7,7 @@ interface RichTextProps {
 
 export default function RichText({ content }: RichTextProps) {
   return (
-    <Markdown remarkPlugins={[[remarkGfm, {singleTilde: false}]]}>
+    <Markdown remarkPlugins={[[remarkGfm, {singleTilde: false}]]} className="rich-text">
       {content}
     </Markdown>
   );
