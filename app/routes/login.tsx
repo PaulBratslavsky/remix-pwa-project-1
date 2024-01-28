@@ -5,7 +5,7 @@ import { useActionData, Form } from "@remix-run/react";
 import logoImage from "~/assets/bjjandfriends.jpg";
 import { login } from "~/api/auth/login.server";
 import { getUserData } from "~/utils/session.server";
-import { Page, Navbar, List, ListInput, Button } from "konsta/react";
+import { Page, Navbar, List, ListInput, Button, Block } from "konsta/react";
 import { User, Lock } from "lucide-react";
 import BackButton from "~/components/BackButton";
 import { StyleWrapper } from "~/components/StyleWrapper";
@@ -59,15 +59,15 @@ export default function LoginRoute() {
   return (
     <Page>
       <Navbar title="Login" right={<BackButton />} />
-      <div className="flex justify-center items-center h-[calc(100vh-44px)]">
+      <Block className="flex justify-center items-center h-[calc(100vh-138px)]">
         <Form method="post" className="w-full">
-          <div className="flex justify-center items-center">
+          <Block className="flex justify-center items-center">
             <img
               src={logoImage}
               alt="BJJ and Friends Logo"
               className="rounded-full overflow-hidden h-24 w-24"
             />
-          </div>
+          </Block>
           <List strongIos insetIos className="py-8">
             <StyleWrapper className="mb-6">
               <ListInput
@@ -98,7 +98,7 @@ export default function LoginRoute() {
             <p className="text-center text-red-500 py-4">{message}</p>
           )}
         </Form>
-      </div>
+      </Block>
     </Page>
   );
 }
