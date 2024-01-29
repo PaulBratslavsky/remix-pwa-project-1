@@ -31,6 +31,7 @@ export async function userme(request: Request) {
     });
 
     const userData = await userRequest.json();
+    userData.jwt = user.jwt;
     return userData;
   } catch (error) {
     console.error(error);

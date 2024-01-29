@@ -14,7 +14,6 @@ export default function BottomMenu() {
   const location = useLocation();
 
   function activeLink(path: string) {
-    console.log(location.pathname, " vs ", path);
     const pathname = location.pathname;
     if (pathname === path) return true;
     else if (pathname.includes(path) && path !== "/") return true;

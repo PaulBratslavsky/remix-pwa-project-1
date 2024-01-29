@@ -1,11 +1,11 @@
 import z from "zod";
-
+import qs from "qs";
+import { json, redirect, type MetaFunction } from "@remix-run/node";
 import { useEffect, useState } from "react";
 import { isValidYouTubeUrl } from "~/utils";
-
-import { json, type MetaFunction } from "@remix-run/node";
+import { flattenAttributes, getStrapiURL } from "~/utils/api-helpers";
 import { useLoaderData, useActionData } from "@remix-run/react";
-
+import { userme } from "~/api/auth/userme.server";
 import { Page } from "konsta/react";
 
 import Modal from "~/components/Modal";
@@ -23,7 +23,11 @@ export const meta: MetaFunction = () => {
 };
 
 export async function action({ request }: { request: Request }) {
-  const url = (process.env.API_URL || "http://localhost:1337") + "/api/posts";
+  const strapiUrl = getStrapiURL();
+  const user = await userme(request);
+  if (!user) return redirect("/login");
+
+  const url = strapiUrl + "/api/contents";
   const formData = await request.formData();
 
   const formSchema = z.object({
@@ -42,34 +46,51 @@ export async function action({ request }: { request: Request }) {
 
   if (!validatedFields.success) {
     return {
-      errors: validatedFields.error.flatten().fieldErrors,
+      zodErrors: validatedFields.error.flatten().fieldErrors,
+      strapiErrors: null,
       message: "Missing Fields. Failed to create post.",
       data: null,
     };
   }
 
-  const data = Object.fromEntries(formData);
+  const payload = {
+    ...validatedFields.data,
+    userBio: user.bio.id,
+    type: "VIDEO",
+    isPublic: true,
+  }
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${user.jwt}`,
     },
-    body: JSON.stringify({ data: { ...data } }),
+    body: JSON.stringify({ data: { ...payload } }),
   });
   const responseData = await response.json();
 
   return json({
-    errors: null,
+    zodErrors: null,
+    strapiErrors: null,
     message: "Post created successfully.",
     data: responseData,
   });
 }
 
 export async function loader() {
-  const url = (process.env.API_URL || "http://localhost:1337") + "/api/posts";
+  const query = qs.stringify({
+    filters: {
+      type: "VIDEO",
+    },
+  });
+
+  const strapiUrl = getStrapiURL();
+  const url = strapiUrl + "/api/contents?" + query;
   const res = await fetch(url);
   const data = await res.json();
-  return json(data);
+  const flattenedData = flattenAttributes(data);
+  return json(flattenedData);
 }
 
 export default function Index() {
@@ -77,13 +98,15 @@ export default function Index() {
   const actionData = useActionData<typeof action>();
 
   const [open, setOpen] = useState(false);
-  
 
   const posts = loaderData.data;
   const meta = loaderData.meta;
   const pageCount = meta?.pagination.pageCount;
 
-  const errors = actionData?.errors;
+  const strapiErrors = actionData?.strapiErrors;
+  const zodErrors = actionData?.zodErrors;
+
+  const errors = strapiErrors || zodErrors;
   const response = actionData?.data;
 
   useEffect(() => {
@@ -94,7 +117,7 @@ export default function Index() {
     <Page className="pb-24 relative bg-white">
       <TopAddButton onClick={setOpen} />
       <PostCard posts={posts} />
-      <LoadNext pageCount={pageCount} onClick={() => alert("Load more")}/>
+      <LoadNext pageCount={pageCount} onClick={() => alert("Load more")} />
       <BottomMenu />
       <Modal open={open} setOpen={setOpen}>
         <CreatePostForm errors={errors} data={response} />
@@ -102,4 +125,3 @@ export default function Index() {
     </Page>
   );
 }
-

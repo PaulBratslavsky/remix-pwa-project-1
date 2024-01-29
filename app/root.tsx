@@ -3,7 +3,6 @@ import { App as KonstaApp, Page, Navbar } from "konsta/react";
 import { useSWEffect, LiveReload } from "@remix-pwa/sw";
 import { getStrapiURL } from "~/utils/api-helpers";
 import { userme } from "~/api/auth/userme.server";
-import { useLocation } from "@remix-run/react";
 
 import {
   type LinksFunction,
@@ -33,10 +32,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function App() {
   useSWEffect();
-  const location = useLocation();
-  const hidden = location.pathname.indexOf("/forum/");
-  console.log(location);
-  const data = useLoaderData<typeof loader>();
+  // const data = useLoaderData<typeof loader>();
   return (
     <html lang="en">
       <head>
@@ -55,7 +51,7 @@ export default function App() {
           <Page>
             <Navbar title="BJJ & Friends" />
             <Outlet />
-            {hidden && <BottomMenu />}
+            <BottomMenu />
           </Page>
         </KonstaApp>
         <ScrollRestoration />

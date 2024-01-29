@@ -6,25 +6,23 @@ function PostCard({
 }: {
   readonly post: {
     id: string;
-    attributes: {
-      heading: string;
-      videoUrl: string;
-      content: string;
-    };
+    heading: string;
+    videoUrl: string;
+    content: string;
   };
 }) {
   return (
     <Block key={post.id}>
       <Block strong className="p-4 -mb-4">
-        <h2 className="pt-1 font-bold text-xl">{post.attributes.heading}</h2>
+        <h2 className="pt-1 font-bold text-xl">{post.heading}</h2>
       </Block>
       <YouTubePlayer
         key={post.id}
         playerKey={post.id}
-        url={post.attributes.videoUrl}
+        url={post.videoUrl}
       />
       <Block strong className="p-4 -mt-1">
-        <p>{post.attributes.content.slice(0, 144) + "..."}</p>
+        <p>{post.content.slice(0, 144) + "..."}</p>
       </Block>
     </Block>
   );
