@@ -6,7 +6,7 @@ export default function CreateTopicForm({ errors, data }: { errors: any, data: a
     <Form id="create-form" method="post" key={data}>
       <List strongIos insetIos>
         <ListInput
-          name="title"
+          name="heading"
           label="Topic Title"
           type="text"
           placeholder="Title"
@@ -14,7 +14,7 @@ export default function CreateTopicForm({ errors, data }: { errors: any, data: a
         />
       
         <ListInput
-          name="description"
+          name="content"
           label="Topic"
           type="textarea"
           placeholder="Topic..."

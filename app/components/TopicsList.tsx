@@ -5,11 +5,11 @@ import { format } from "date-fns";
 interface TopicProps {
   topic: {
     id: number;
-    title: string;
-    description: string;
+    heading: string;
+    content: string;
     public: boolean;
     createdAt: string;
-    user_bio: {
+    userBio: {
       id: number;
       name: string;
       belt: string;
@@ -22,7 +22,7 @@ interface TopicsProps {
 }
 
 function TopicItem({ topic }: Readonly<TopicProps>) {
-  const user = topic.user_bio;
+  const user = topic.userBio;
   const navigate = useNavigate();
   const name = user.name;
   const belt = user.belt.toLowerCase();
@@ -31,10 +31,10 @@ function TopicItem({ topic }: Readonly<TopicProps>) {
     <ListItem
       link
       chevronMaterial={false}
-      title={topic.title}
+      title={topic.heading}
       after={format(new Date(topic.createdAt), "dd/MM/yyyy")}
       subtitle={name + " - " + belt + " belt"}
-      text={topic.description}
+      text={topic.content}
       onClick={() => navigate("/forum/" + topic.id)}
     />
   );

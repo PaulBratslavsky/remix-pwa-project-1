@@ -6,8 +6,8 @@ import { isValidYouTubeUrl } from "~/utils";
 import { flattenAttributes, getStrapiURL } from "~/utils/api-helpers";
 import { useLoaderData, useActionData } from "@remix-run/react";
 import { userme } from "~/api/auth/userme.server";
-import { Page } from "konsta/react";
 
+import { Page } from "konsta/react";
 import Modal from "~/components/Modal";
 import BottomMenu from "~/components/BottomMenu";
 import CreatePostForm from "~/components/CreatePostForm";
@@ -17,10 +17,26 @@ import LoadNext from "~/components/LoadNext";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
+    { title: "BJJ & FRIENDS | Home" },
     { name: "description", content: "Welcome to Remix!" },
   ];
 };
+
+const query = qs.stringify({
+  filters: { type: "VIDEO", isPublic: true },
+  fields: ["id", "heading", "videoUrl", "content", "createdAt"],
+
+});
+
+export async function loader() {
+  const strapiUrl = getStrapiURL();
+  const url = strapiUrl + "/api/contents?" + query;
+  const res = await fetch(url);
+  const data = await res.json();
+  const flattenedData = flattenAttributes(data);
+  return json(flattenedData);
+}
+
 
 export async function action({ request }: { request: Request }) {
   const strapiUrl = getStrapiURL();
@@ -68,6 +84,7 @@ export async function action({ request }: { request: Request }) {
     },
     body: JSON.stringify({ data: { ...payload } }),
   });
+
   const responseData = await response.json();
 
   return json({
@@ -78,25 +95,10 @@ export async function action({ request }: { request: Request }) {
   });
 }
 
-export async function loader() {
-  const query = qs.stringify({
-    filters: {
-      type: "VIDEO",
-    },
-  });
-
-  const strapiUrl = getStrapiURL();
-  const url = strapiUrl + "/api/contents?" + query;
-  const res = await fetch(url);
-  const data = await res.json();
-  const flattenedData = flattenAttributes(data);
-  return json(flattenedData);
-}
 
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
-
   const [open, setOpen] = useState(false);
 
   const posts = loaderData.data;

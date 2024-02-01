@@ -1,31 +1,40 @@
 import qs from "qs";
 import z from "zod";
+import { json, redirect, type MetaFunction } from "@remix-run/node";
 import { useState, useEffect } from "react";
-import { userme } from "~/api/auth/userme.server";
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData, useActionData } from "@remix-run/react";
+
 import { flattenAttributes, getStrapiURL } from "~/utils/api-helpers";
+import { useLoaderData, useActionData } from "@remix-run/react";
+import { userme } from "~/api/auth/userme.server";
 
 import { Page, Navbar } from "konsta/react";
-import BackButton from "~/components/BackButton";
-import TopicsList from "~/components/TopicsList";
+
 import Modal from "~/components/Modal";
+import BackButton from "~/components/BackButton";
 import CreateTopicForm from "~/components/CreateTopicForm";
+import TopicsList from "~/components/TopicsList";
 import TopAddButton from "~/components/TopAddButton";
 
+export const meta: MetaFunction = () => {
+  return [
+    { title: "BJJ & FRIENDS | Forum" },
+    { name: "description", content: "Welcome to Remix!" },
+  ];
+};
+
 const query = qs.stringify({
-  fields: ["title", "description", "public", "createdAt"],
-  populate: {
-    user_bio: { fields: ["name", "belt"] },
-  },
+  filters: { type: "POST", isPublic: true},
+  fields: ["heading", "content", "createdAt"],
+  populate: { userBio: { fields: ["name", "belt"] } },
 });
 
 export async function loader() {
   const strapiUrl = getStrapiURL();
-  const url = strapiUrl + "/api/topics?" + query;
+  const url = strapiUrl + "/api/contents?" + query;
   const res = await fetch(url);
   const data = await res.json();
   const flattenedData = flattenAttributes(data);
+  console.log("flattenedData", flattenedData);
   return json({ ...flattenedData, strapiUrl });
 }
 
@@ -34,17 +43,17 @@ export async function action({ request }: { request: Request }) {
   const user = await userme(request);
   if (!user) return redirect("/login");
 
-  const url = strapiUrl + "/api/topics";
+  const url = strapiUrl + "/api/contents";
   const formData = await request.formData();
 
   const formSchema = z.object({
-    title: z.string().min(1),
-    description: z.string().min(1),
+    heading: z.string().min(1),
+    content: z.string().min(1),
   });
 
   const validatedFields = formSchema.safeParse({
-    title: String(formData.get("title")),
-    description: String(formData.get("description")),
+    heading: String(formData.get("heading")),
+    content: String(formData.get("content")),
   });
 
   if (!validatedFields.success) {
@@ -56,7 +65,7 @@ export async function action({ request }: { request: Request }) {
   }
 
   const data = Object.fromEntries(formData);
-  data.user_bio = user.bio.id;
+  data.userBio = user.bio.id;
 
   const response = await fetch(url, {
     method: "POST",
@@ -86,6 +95,8 @@ export default function ForumRoute() {
   useEffect(() => {
     if (response !== null) setOpen(false);
   }, [response]);
+
+  console.log("topics", topics);
 
   return (
     <Page className="pb-16">
