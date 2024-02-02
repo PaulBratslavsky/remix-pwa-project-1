@@ -25,7 +25,6 @@ export const meta: MetaFunction = () => {
 const query = qs.stringify({
   filters: { type: "VIDEO", isPublic: true },
   fields: ["id", "heading", "videoUrl", "content", "createdAt"],
-
 });
 
 export async function loader() {

@@ -64,15 +64,20 @@ export async function action({ request }: { request: Request }) {
     };
   }
 
-  const data = Object.fromEntries(formData);
-  data.userBio = user.bio.id;
+  const payload = {
+    ...validatedFields.data,
+    userBio: user.bio.id,
+    type: "POST",
+    isPublic: true,
+  }
 
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${user.jwt}`,
     },
-    body: JSON.stringify({ data: { ...data } }),
+    body: JSON.stringify({ data: { ...payload} }),
   });
   const responseData = await response.json();
 

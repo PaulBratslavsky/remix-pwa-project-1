@@ -27,6 +27,8 @@ function TopicItem({ topic }: Readonly<TopicProps>) {
   const name = user.name;
   const belt = user.belt.toLowerCase();
 
+  console.log("topic", topic);
+
   return (
     <ListItem
       link

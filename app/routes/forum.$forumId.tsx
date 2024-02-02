@@ -18,21 +18,17 @@ export async function loader({ params }: LoaderFunctionArgs) {
   const forumId = params.forumId;
   const strapiUrl = getStrapiURL();
 
-  const url = strapiUrl + "/api/topics/" + forumId + "?" + query;
+  const url = strapiUrl + "/api/contents/" + forumId + "?" + query;
   const res = await fetch(url);
   const data = await res.json();
   const flattenedData = flattenAttributes(data);
   return json({ ...flattenedData, strapiUrl });
 }
 
-
-
 export async function action({ request }: { request: Request }) {
   const strapiUrl = getStrapiURL();
   const user = await userme(request);
   if (!user) return redirect("/login");
-
-
 
   const url = strapiUrl + "/api/comments";
   const formData = await request.formData();
@@ -72,23 +68,23 @@ export async function action({ request }: { request: Request }) {
   });
 }
 
-
 export default function LessonDynamicRoute() {
   const loaderData = useLoaderData<typeof loader>();
+  console.log("loaderData", loaderData);
 
   const [open, setOpen] = useState(false);
 
   return (
     <Page className="pb-16">
-      <Navbar
+      {/* <Navbar
         title={loaderData.title.slice(0, 24) + "..."}
         right={<BackButton />}
-      />
+      /> */}
       <TopAddButton onClick={setOpen} />
-
+      {/* 
       <Modal open={open} setOpen={setOpen}>
         <CreateCommentForm  />
-      </Modal>
+      </Modal> */}
     </Page>
   );
 }
