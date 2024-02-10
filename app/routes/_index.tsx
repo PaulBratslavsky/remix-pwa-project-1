@@ -1,6 +1,11 @@
 import z from "zod";
 import qs from "qs";
-import { json, redirect, type MetaFunction } from "@remix-run/node";
+import {
+  json,
+  redirect,
+  type MetaFunction,
+  LoaderFunctionArgs,
+} from "@remix-run/node";
 import { useEffect, useState } from "react";
 import { isValidYouTubeUrl } from "~/utils";
 import { flattenAttributes, getStrapiURL } from "~/utils/api-helpers";
@@ -27,15 +32,16 @@ const query = qs.stringify({
   fields: ["id", "heading", "videoUrl", "content", "createdAt"],
 });
 
-export async function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
   const strapiUrl = getStrapiURL();
+  const user = await userme(request);
   const url = strapiUrl + "/api/contents?" + query;
   const res = await fetch(url);
   const data = await res.json();
   const flattenedData = flattenAttributes(data);
+  flattenedData.user = user;
   return json(flattenedData);
 }
-
 
 export async function action({ request }: { request: Request }) {
   const strapiUrl = getStrapiURL();
@@ -73,7 +79,7 @@ export async function action({ request }: { request: Request }) {
     userBio: user.bio.id,
     type: "VIDEO",
     isPublic: true,
-  }
+  };
 
   const response = await fetch(url, {
     method: "POST",
@@ -94,7 +100,6 @@ export async function action({ request }: { request: Request }) {
   });
 }
 
-
 export default function Index() {
   const loaderData = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
@@ -102,12 +107,13 @@ export default function Index() {
 
   const posts = loaderData.data;
   const meta = loaderData.meta;
+  const user = loaderData.user;
   const pageCount = meta?.pagination.pageCount;
 
   const strapiErrors = actionData?.strapiErrors;
   const zodErrors = actionData?.zodErrors;
 
-  const errors = strapiErrors || zodErrors;
+  const errors = strapiErrors ?? zodErrors;
   const response = actionData?.data;
 
   useEffect(() => {
@@ -116,7 +122,7 @@ export default function Index() {
 
   return (
     <Page className="pb-24 relative bg-white">
-      <TopAddButton onClick={setOpen} />
+      {user && <TopAddButton onClick={setOpen} />}
       <PostCard posts={posts} />
       <LoadNext pageCount={pageCount} onClick={() => alert("Load more")} />
       <BottomMenu />

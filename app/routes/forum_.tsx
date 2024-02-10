@@ -1,6 +1,6 @@
 import qs from "qs";
 import z from "zod";
-import { json, redirect, type MetaFunction } from "@remix-run/node";
+import { json, redirect, type MetaFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { useState, useEffect } from "react";
 
 import { flattenAttributes, getStrapiURL } from "~/utils/api-helpers";
@@ -28,14 +28,16 @@ const query = qs.stringify({
   populate: { userBio: { fields: ["name", "belt"] } },
 });
 
-export async function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
   const strapiUrl = getStrapiURL();
+  const user = await userme(request);
   const url = strapiUrl + "/api/contents?" + query;
   const res = await fetch(url);
   const data = await res.json();
   const flattenedData = flattenAttributes(data);
-  console.log("flattenedData", flattenedData);
-  return json({ ...flattenedData, strapiUrl });
+  flattenedData.user = user;
+  flattenedData.strapiUrl = strapiUrl;
+  return json(flattenedData);
 }
 
 export async function action({ request }: { request: Request }) {
@@ -96,6 +98,7 @@ export default function ForumRoute() {
   const errors = actionData?.errors;
   const response = actionData?.data;
   const topics = loaderData.data;
+  const user = loaderData.user;
 
   useEffect(() => {
     if (response !== null) setOpen(false);
@@ -106,7 +109,7 @@ export default function ForumRoute() {
   return (
     <Page className="pb-16">
       <Navbar title="Forum" right={<BackButton />} />
-      <TopAddButton onClick={setOpen} />
+      {user && <TopAddButton onClick={setOpen} />}
       <TopicsList topics={topics} />
       <Modal open={open} setOpen={setOpen}>
         <CreateTopicForm errors={errors} data={response} />

@@ -1,28 +1,41 @@
 import qs from "qs";
 import z from "zod";
 import { useState } from "react";
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
+import { json, redirect, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { userme } from "~/api/auth/userme.server";
+
 import TopAddButton from "~/components/TopAddButton";
 import Modal from "~/components/Modal";
 
-import { Page, Navbar } from "konsta/react";
+import { Page, Navbar, Block, BlockTitle, BlockFooter } from "konsta/react";
 
 import BackButton from "~/components/BackButton";
-import { getStrapiURL, flattenAttributes } from "~/utils/api-helpers";
+import {
+  getStrapiURL,
+  flattenAttributes,
+  formatDate,
+} from "~/utils/api-helpers";
 import { CreateCommentForm } from "~/components/CreateCommentForm";
 
-const query = qs.stringify({});
+const query = qs.stringify({
+  filters: { type: "POST", isPublic: true },
+  fields: ["heading", "content", "createdAt"],
+  populate: { userBio: { fields: ["name", "belt"] } },
+});
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ params, request }: LoaderFunctionArgs) {
   const forumId = params.forumId;
   const strapiUrl = getStrapiURL();
+  const user = await userme(request);
 
   const url = strapiUrl + "/api/contents/" + forumId + "?" + query;
   const res = await fetch(url);
   const data = await res.json();
   const flattenedData = flattenAttributes(data);
-  return json({ ...flattenedData, strapiUrl });
+  flattenedData.user = user;
+  flattenedData.strapiUrl = strapiUrl;
+  return json(flattenedData);
 }
 
 export async function action({ request }: { request: Request }) {
@@ -70,21 +83,37 @@ export async function action({ request }: { request: Request }) {
 
 export default function LessonDynamicRoute() {
   const loaderData = useLoaderData<typeof loader>();
-  console.log("loaderData", loaderData);
+  const user = loaderData.user;
+
+  console.log("loaderData", loaderData.userBio);
 
   const [open, setOpen] = useState(false);
 
   return (
     <Page className="pb-16">
-      {/* <Navbar
-        title={loaderData.title.slice(0, 24) + "..."}
+      <Navbar
+        title={loaderData.heading.slice(0, 24) + "..."}
         right={<BackButton />}
-      /> */}
-      <TopAddButton onClick={setOpen} />
-      {/* 
+      />
+      {user && <TopAddButton onClick={setOpen} />}
+
+      <Block strong outline className="mt-0">
+        <h2 className="text-lg font-bold mb-4">{loaderData.heading}</h2>
+        <p className="mb-2">{loaderData.content}</p>
+        <div className="flex justify-between">
+        <div className="flex gap-2">
+          <span className="font-bold text-slate-500">{loaderData.userBio.name}</span>
+          {"-"}
+          <span>{loaderData.userBio.belt.toLowerCase() + " belt"}</span>
+        </div>
+          <span>{formatDate(loaderData.createdAt)}</span>
+        </div>
+      </Block>
+
       <Modal open={open} setOpen={setOpen}>
-        <CreateCommentForm  />
-      </Modal> */}
+        {/* <CreateCommentForm  /> */}
+        <h1>form</h1>
+      </Modal>
     </Page>
   );
 }
